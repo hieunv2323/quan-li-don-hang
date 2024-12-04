@@ -1,13 +1,197 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* App.css */
+
+/* Nút menu */
+.menu-btn {
+  position: fixed;
+  top: 20px; /* Cách mép trên 20px */
+  left: 20px; /* Cách mép trái 20px */
+  background-color: #007bff;
+  color: white;
+  font-size: 24px;
+  width: 50px; /* Chiều rộng nút */
+  height: 50px; /* Chiều cao nút */
+  border-radius: 10px; /* Bo góc */
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.menu-btn:hover {
+  background-color: #0056b3;
+}
+
+.menu-btn span {
+  font-size: 30px;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -300px; /* Ẩn bên ngoài màn hình ban đầu */
+  width: 250px;
+  height: 100%;
+  background-color: #f4f4f9;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease;
+  padding: 20px;
+}
+
+.sidebar.open {
+  left: 0; /* Hiện khi mở */
+}
+
+/* Nút đóng (X) */
+.sidebar .close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: transparent;
+  border: none;
+  font-size: 30px;
+  color: #333;
+  cursor: pointer;
+}
+
+.sidebar .close-btn:hover {
+  color: #ff0000;
+}
+
+/* Nội dung trong sidebar */
+.sidebar .nav-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.sidebar .nav-item a {
+  color: #333;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.sidebar .nav-item a:hover {
+  text-decoration: underline;
+}
+
+
+/* Định dạng chung cho ứng dụng */
+.App {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+nav {
+  margin-bottom: 20px;
+  background-color: #007bff;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul li {
+  margin: 0 15px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Định dạng cho các form */
+form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  width: 50%;
+  max-width: 600px;
+}
+
+form input, form select, form button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+form button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #0056b3;
+}
+
+/* Định dạng cho bảng danh sách sản phẩm và đơn hàng */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+th, td {
+  padding: 10px;
+}
+
+th {
+  background-color: #f1f1f1;
+}
+
+td {
+  background-color: white;
+}
+
+td a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+td a:hover {
+  text-decoration: underline;
+}
+
+/* Định dạng cho các thông báo */
+.alert {
+  background-color: #f44336;
+  color: white;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.alert.success {
+  background-color: #4CAF50;
+}
+
+.alert.warning {
+  background-color: #ff9800;
 }
