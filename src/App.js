@@ -4,7 +4,8 @@ import ProductList from './pages/ProductList';
 import AddProductForm from './pages/AddProductForm';
 import CreateOrderForm from './pages/CreateOrderForm';
 import OrderList from './pages/OrderList';
-import './App.css'; 
+import EditProduct from './pages/EditProduct'
+import './index.css'; 
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false); // State để mở/đóng sidebar
@@ -30,7 +31,7 @@ function App() {
           <button className="close-btn" onClick={closeSidebar}>
             &times;
           </button>
-
+          <h1>MENU</h1>
           <div className="nav-item"><a href="/products">Sản phẩm</a></div>
           <div className="nav-item"><a href="/add-product">Tạo sản phẩm</a></div>
           <div className="nav-item"><a href="/create-order">Tạo đơn hàng</a></div>
@@ -42,6 +43,9 @@ function App() {
           <Route path="/add-product" element={<AddProductForm />} />
           <Route path="/create-order" element={<CreateOrderForm />} />
           <Route path="/orders" element={<OrderList />} />
+          <Route path="/edit/:id" element={<EditProduct />} />
+          
+          
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,18 +1,40 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { getFromLocalStorage, saveToLocalStorage } from '../utils/localStorageUtils';
-import Modal from '../components/Modal'; 
+import Modal from '../components/Modal';
+import '../index.css'; // Sử dụng CSS chung
 
 const CreateOrderForm = () => {
   const [orderItems, setOrderItems] = useState([]);
   const [customerName, setCustomerName] = useState('');
-  const modalRef = useRef(); 
+  const [totalAmount, setTotalAmount] = useState(0);
+  const modalRef = useRef();
   const products = getFromLocalStorage('products') || [];
 
   const addProductToOrder = (productId) => {
     const product = products.find((p) => p.id === productId);
+
     if (product) {
-      setOrderItems((prev) => [...prev, { ...product, quantity: 1 }]);
+      const existingProduct = orderItems.find((item) => item.id === productId);
+
+      if (existingProduct) {
+        setOrderItems((prev) =>
+          prev.map((item) =>
+            item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
+          )
+        );
+      } else {
+        setOrderItems((prev) => [...prev, { ...product, quantity: 1 }]);
+      }
     }
+  };
+
+  useEffect(() => {
+    const newTotalAmount = orderItems.reduce((sum, item) => sum + item.prices[0] * item.quantity, 0);
+    setTotalAmount(newTotalAmount);
+  }, [orderItems]);
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('vi-VN').format(amount);
   };
 
   const handleOrderSubmit = () => {
@@ -25,7 +47,7 @@ const CreateOrderForm = () => {
       id: `o${Date.now()}`,
       customerName,
       items: orderItems,
-      total: orderItems.reduce((sum, item) => sum + item.prices[0] * item.quantity, 0),
+      total: totalAmount,
       date: new Date().toISOString(),
       status: 'Đang xử lý',
     };
@@ -39,35 +61,39 @@ const CreateOrderForm = () => {
   };
 
   return (
-    <div>
-      <h1>Tạo đơn hàng mới</h1>
+    <div className="product-form">
+      <h1>Tạo Đơn Hàng</h1>
       <input
         type="text"
         placeholder="Tên khách hàng"
         value={customerName}
         onChange={(e) => setCustomerName(e.target.value)}
       />
-      <h2>Danh sách sản phẩm</h2>
-      <ul>
+      <h2>Danh Sách Sản Phẩm</h2>
+      <ul className="product-list">
         {products.map((product) => (
           <li key={product.id}>
-            {product.name} - {product.prices[0]} VND
+            <span>
+              {product.name} - {formatCurrency(product.prices[0])} VND
+            </span>
             <button onClick={() => addProductToOrder(product.id)}>Thêm</button>
           </li>
         ))}
       </ul>
-      <h2>Sản phẩm trong đơn hàng</h2>
-      <ul>
+      <h2>Sản Phẩm Trong Đơn Hàng</h2>
+      <ul className="order-items">
         {orderItems.map((item, index) => (
           <li key={index}>
-            {item.name} - {item.quantity} x {item.prices[0]} VND
+            <span>
+              {item.name} - {item.quantity} x {formatCurrency(item.prices[0])} VND
+            </span>
           </li>
         ))}
       </ul>
-      <button onClick={handleOrderSubmit}>Tạo đơn hàng</button>
-
+      <div className="total-amount">Tổng tiền: {formatCurrency(totalAmount)} VND</div>
+      <button onClick={handleOrderSubmit}>Tạo Đơn Hàng</button>
       <Modal ref={modalRef} buttonCaption="Đóng">
-        <h3>Thông báo lỗi</h3>
+        <h3>Thông Báo Lỗi</h3>
         <p>Vui lòng nhập tên khách hàng và thêm ít nhất một sản phẩm vào đơn hàng.</p>
       </Modal>
     </div>
