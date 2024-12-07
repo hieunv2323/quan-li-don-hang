@@ -1,13 +1,10 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { saveToLocalStorage, getFromLocalStorage } from '../utils/localStorageUtils';
-import Modal from '../components/Modal';
-import '../index.css'; // Sử dụng CSS chung
+import '../index.css';
 
 const AddProductForm = () => {
-  const modalRef = useRef();
-
   const validationSchema = Yup.object({
     name: Yup.string().required('Tên sản phẩm không được bỏ trống'),
     quantity: Yup.number()
@@ -19,8 +16,7 @@ const AddProductForm = () => {
   });
 
   const handleFormSubmit = (values, { resetForm }) => {
-    try {
-      const newProduct = {
+  const newProduct = {
         id: `p${Date.now()}`,
         ...values,
         prices: values.prices.split(',').map((price) => parseInt(price.trim(), 10)),
@@ -32,9 +28,6 @@ const AddProductForm = () => {
 
       alert('Thêm sản phẩm thành công!');
       resetForm();
-    } catch (error) {
-      modalRef.current.open();
-    }
   };
 
   return (
@@ -70,11 +63,6 @@ const AddProductForm = () => {
           </Form>
         )}
       </Formik>
-
-      <Modal ref={modalRef} buttonCaption="Đóng">
-        <h3>Lỗi khi thêm sản phẩm</h3>
-        <p>Đã xảy ra lỗi khi xử lý thông tin. Vui lòng kiểm tra và thử lại.</p>
-      </Modal>
     </>
   );
 };

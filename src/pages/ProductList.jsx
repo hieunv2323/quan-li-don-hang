@@ -2,12 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getFromLocalStorage } from "../utils/localStorageUtils";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faTrash,
-  faEdit,
-  faLock,
-  faUnlock,
-} from "@fortawesome/free-solid-svg-icons";
+import {faTrash,faEdit,faLock,faUnlock,} from "@fortawesome/free-solid-svg-icons";
 import "../index.css";
 
 const ProductList = () => {

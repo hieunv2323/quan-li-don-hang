@@ -31,7 +31,7 @@ function App() {
           <button className="close-btn" onClick={closeSidebar}>
             &times;
           </button>
-          <h1>MENU</h1>
+          <h1>QUẢN LÝ</h1>
           <div className="nav-item"><a href="/products">Sản phẩm</a></div>
           <div className="nav-item"><a href="/add-product">Tạo sản phẩm</a></div>
           <div className="nav-item"><a href="/create-order">Tạo đơn hàng</a></div>
