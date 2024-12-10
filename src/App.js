@@ -20,7 +20,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="body">
         <h1>Ứng Dụng Quản Lý Sản Phẩm và Đơn Hàng</h1>
   
         <button className="menu-btn" onClick={toggleSidebar}>

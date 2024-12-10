@@ -1,69 +1,118 @@
-import React from 'react';
-import { Formik, Field, Form } from 'formik';
-import * as Yup from 'yup';
-import { saveToLocalStorage, getFromLocalStorage } from '../utils/localStorageUtils';
-import '../index.css';
+import React from "react";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import {
+  saveToLocalStorage,
+  getFromLocalStorage,
+} from "../utils/localStorageUtils";
+import {
+  TextInput,
+  NumberInput,
+  Textarea,
+  Button,
+  Group,
+  Alert,
+} from "@mantine/core";
 
 const AddProductForm = () => {
   const validationSchema = Yup.object({
-    name: Yup.string().required('Tên sản phẩm không được bỏ trống'),
+    name: Yup.string().required("Tên sản phẩm không được bỏ trống"),
     quantity: Yup.number()
-      .min(0, 'Số lượng không thể âm')
-      .required('Vui lòng nhập số lượng'),
+      .min(0, "Số lượng không thể âm")
+      .required("Vui lòng nhập số lượng"),
     prices: Yup.string()
-      .matches(/^(\d+(\.\d{1,2})?)(,\s*(\d+(\.\d{1,2})?))*$/, 'Giá phải là số')
-      .required('Vui lòng nhập giá sản phẩm'),
+      .matches(
+        /^(\d+(\.\d{1,2})?)(,\s*(\d+(\.\d{1,2})?))*$/,
+        "Giá phải là số, cách nhau bởi dấu phẩy"
+      )
+      .required("Vui lòng nhập giá sản phẩm"),
   });
 
   const handleFormSubmit = (values, { resetForm }) => {
-  const newProduct = {
-        id: `p${Date.now()}`,
-        ...values,
-        prices: values.prices.split(',').map((price) => parseInt(price.trim(), 10)),
-        status: values.quantity === 0 ? 'Hết hàng' : 'Đang bán',
-      };
+    const newProduct = {
+      id: `p${Date.now()}`,
+      ...values,
+      prices: values.prices.split(",").map((price) => parseFloat(price.trim())),
+      status: values.quantity === 0 ? "Hết hàng" : "Đang bán",
+    };
 
-      const existingProducts = getFromLocalStorage('products') || [];
-      saveToLocalStorage('products', [...existingProducts, newProduct]);
+    const existingProducts = getFromLocalStorage("products") || [];
+    saveToLocalStorage("products", [...existingProducts, newProduct]);
 
-      alert('Thêm sản phẩm thành công!');
-      resetForm();
+    alert("Thêm sản phẩm thành công!");
+
+    resetForm();
   };
 
   return (
-    <>
-      <Formik
-        initialValues={{ name: '', quantity: 0, description: '', prices: '' }}
-        validationSchema={validationSchema}
-        onSubmit={handleFormSubmit}
-      >
-        {({ errors, touched }) => (
-          <Form className="product-form">
-            <h1>Thêm Sản Phẩm</h1>
-            <div>
-              <label>Tên sản phẩm</label>
-              <Field name="name" type="text" />
-              {errors.name && touched.name && <div className="error">{errors.name}</div>}
-            </div>
-            <div>
-              <label>Số lượng</label>
-              <Field name="quantity" type="number" />
-              {errors.quantity && touched.quantity && <div className="error">{errors.quantity}</div>}
-            </div>
-            <div>
-              <label>Miêu tả</label>
-              <Field name="description" as="textarea" />
-            </div>
-            <div>
-              <label>Giá</label>
-              <Field name="prices" type="text" />
-              {errors.prices && touched.prices && <div className="error">{errors.prices}</div>}
-            </div>
-            <button type="submit">Lưu sản phẩm</button>
-          </Form>
-        )}
-      </Formik>
-    </>
+    <Formik
+      initialValues={{ name: "", quantity: 0, description: "", prices: "" }}
+      validationSchema={validationSchema}
+      onSubmit={handleFormSubmit}
+    >
+      {({
+        values,
+        errors,
+        touched,
+        handleChange,
+        handleBlur,
+        setFieldValue,
+      }) => (
+        <Form style={{ maxWidth: 600, margin: "0 auto" }}>
+          <h1>Thêm Sản Phẩm</h1>
+
+          <TextInput
+            label="Tên sản phẩm"
+            placeholder="Nhập tên sản phẩm"
+            required
+            value={values.name}
+            name="name"
+            onChange={handleChange}
+            error={errors.name && touched.name ? errors.name : null}
+          />
+
+          <NumberInput
+            label="Số lượng"
+            placeholder="Nhập số lượng"
+            required
+            min={0}
+            value={values.quantity}
+            onChange={(value) => setFieldValue("quantity", value || 0)}
+            error={errors.quantity && touched.quantity ? errors.quantity : null}
+          />
+
+          <Textarea
+            label="Miêu tả"
+            placeholder="Miêu tả về sản phẩm"
+            value={values.description}
+            name="description"
+            onChange={handleChange}
+          />
+
+          <TextInput
+            label="Giá"
+            placeholder="Nhập giá sản phẩm, cách nhau bởi dấu phẩy"
+            required
+            value={values.prices}
+            name="prices"
+            onChange={handleChange}
+            error={errors.prices && touched.prices ? errors.prices : null}
+          />
+
+          <Group position="right" mt="md">
+            <Button type="submit" color="green">
+              Lưu sản phẩm
+            </Button>
+          </Group>
+
+          {errors.submit && (
+            <Alert color="red" mt="sm">
+              {errors.submit}
+            </Alert>
+          )}
+        </Form>
+      )}
+    </Formik>
   );
 };
 
